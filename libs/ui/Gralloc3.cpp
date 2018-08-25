@@ -47,6 +47,13 @@ uint64_t getValidUsageBits() {
              hardware::hidl_enum_range<hardware::graphics::common::V1_2::BufferUsage>()) {
             bits = bits | bit;
         }
+
+#ifdef ADDNL_GRALLOC_10_USAGE_BITS
+        uint64_t addnl_bits = static_cast<uint64_t>(ADDNL_GRALLOC_10_USAGE_BITS);
+        ALOGI("Adding additional valid usage bits: 0x%" PRIx64, addnl_bits);
+        bits = bits | addnl_bits;
+#endif
+
         // TODO(b/72323293, b/72703005): Remove these invalid bits from callers
         bits = bits | ((1 << 13) | (1 << 21));
         return bits;
